@@ -28,7 +28,8 @@ public class Darp {
         Date pickup[]=new Date[n];
         Date deadline[]=new Date[n];
         int h=1; // Max. ride time of a request
-        double c[][][] = new double[N][N][K]; // cij Routing cos4
+        double c[][][] = new double[N][N][K]; // cij Routing cost
+        double distance[][] = new double[N][N]; // distance between nodes
         double M[][][] = new double[N][N][K];
         int W[][][] = new int[N][N][K];
         int q[] = new int[N];
@@ -89,20 +90,7 @@ public class Darp {
 //             System.out.println(q[i]);
          }
         //time needed for going from node i to node j
-         
-        double t[][] = new double[N][N];
-        
-        for (int i=0; i<N; i++){
-            for (int j=0; j<N; j++){
-                if (i!=j){
-                    t[i][j]=0.2;
-                }
-                else if(i==j){
-                    t[i][j]=0.0;
-                }                     
-            }
-        }
-        
+
         // total duration of courier k cannot exceed Tk
         
         for (int k=0; k<K; k++){
@@ -186,6 +174,24 @@ public class Darp {
          }
       
     }
+        
+             
+        double t[][] = new double[N][N];
+        
+        for (int i=0; i<N; i++){
+            for (int j=0; j<N; j++){
+                distance[i][j]=Haversine.haversine(pickup_dropoff[i][1], pickup_dropoff[i][0], pickup_dropoff[j][1], pickup_dropoff[j][0]);
+                if (i!=j){
+                t[i][j]=distance[i][j]/30;
+//                    t[i][j]=0.2;
+                }
+                else if(i==j){
+                    t[i][j]=0.0;
+                }                     
+            }
+        }
+        
+  
 
          for (int k=0; k<K; k++){
          for (int i=0; i<N; i++){
@@ -491,7 +497,7 @@ public class Darp {
 
                                     if (cplex.getValue(x[i][j][k]) > 0.0) {
 //                                        System.out.println(x[i][j][k].getName() + " " + cplex.getValue(x[i][j][k]));
-                                        System.out.println(i + " " + j + " "+ k + " " + cplex.getValue(x[i][j][k]));
+                                        System.out.println(i + " " + j + " "+ k + " " + (int) cplex.getValue(x[i][j][k]));
 //                                        System.out.println(Q[i][k].getName() + " " + cplex.getValue(Q[i][k]));
 //                                        System.out.println(L[i][k].getName() + " " + cplex.getValue(L[i][k]));
                                            
