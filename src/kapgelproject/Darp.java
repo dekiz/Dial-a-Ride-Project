@@ -9,11 +9,11 @@ import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import jdk.internal.org.objectweb.asm.Label;
 import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.Number;
+import java.lang.*;
 
 public class Darp {
     
@@ -21,13 +21,14 @@ public class Darp {
 //      Declarations
         
         
-        int n = 5;// number of requests
-        int K = 4; // number of couriers
+        int n = 4;// number of requests
+        int K = 2; // number of couriers
         int N = (2*n+2);
         
         Date pickup[]=new Date[n];
+        long pickupms[]=new long[n];
         Date deadline[]=new Date[n];
-        int h=1; // Max. ride time of a request
+        int h=3600000; // Max. ride time of a request
         double c[][][] = new double[N][N][K]; // cij Routing cost
         double distance[][] = new double[N][N]; // distance between nodes
         double M[][][] = new double[N][N][K];
@@ -65,7 +66,7 @@ public class Darp {
 //      Duration of service at node i         
         double d[]=new double[N];
         for (int i=0; i<N; i++){
-            d[i]=0.2;
+            d[i]=360000;
         }
       
 // Each vehicle has a capacity KQ
@@ -95,7 +96,7 @@ public class Darp {
         
         for (int k=0; k<K; k++){
             
-            T[k] = 9.0;
+            T[k] = 32400000;
         }
 //Define pickup times array
 //        Date pickuptimes[]=new Date[n];
@@ -113,10 +114,13 @@ public class Darp {
 //        }        
         
         try {
-        String[] strdate = {"2015-08-17 16:48:21", "2015-08-17 06:53:21", "2015-08-17 10:59:55","2015-08-17 15:55:16" , "2015-08-17 11:33:05", "2015-08-17 08:06:21", "2015-08-17 08:46:03", "2015-08-17 10:45:01","2015-08-17 16:20:14","2015-08-17 13:01:19"};
+        String[] strdate = {"2015-08-17 15:48:21", "2015-08-17 16:30:21", "2015-08-17 16:59:55","2015-08-17 17:45:16" , "2015-08-17 18:33:05", "2015-08-17 18:06:21", "2015-08-17 19:46:03"};
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for ( int i=0; i<n; i++){
             pickup[i] = dateFormat.parse(strdate[i]);
+            pickupms[i] = pickup[i].getTime();
+//            System.out.println(pickupms[i]);
+//            System.out.println(pickup[i].getTime());
 //      System.out.println(dateFormat.format(pickup[i]));
         }
 
@@ -136,27 +140,7 @@ public class Darp {
         }   
         }
         
-        Date e[]=new Date[N];
-        e[0]=pickup[0];
-        e[N-1]=pickup[n-1];
-        for (int i=0; i<n; i++){
-            e[i+1]=pickup[i];
-        }
-        for (int i=0; i<n; i++){
-            e[i+n+1]=pickup[i];
-        }
-        
 
-
-        Date l[]=new Date[N];
-        for (int i=0; i<N; i++){
-            calendar.setTime(e[i]);
-            calendar.add(Calendar.HOUR, h);
-            Date result1=calendar.getTime();
-            l[i]=result1;
-        }
-
-        
         
         } catch (ParseException e) {
             e.printStackTrace();
@@ -182,7 +166,7 @@ public class Darp {
             for (int j=0; j<N; j++){
                 distance[i][j]=Haversine.haversine(pickup_dropoff[i][1], pickup_dropoff[i][0], pickup_dropoff[j][1], pickup_dropoff[j][0]);
                 if (i!=j){
-                t[i][j]=distance[i][j]/30;
+                t[i][j]=distance[i][j]*3600000/30;
 //                    t[i][j]=0.2;
                 }
                 else if(i==j){
@@ -196,7 +180,7 @@ public class Darp {
          for (int k=0; k<K; k++){
          for (int i=0; i<N; i++){
              for (int j=0; j<N; j++){
-             M[i][j][k]=3;    
+             M[i][j][k]=10800000;    
          }
          }
     }
@@ -211,6 +195,47 @@ public class Darp {
          
             try{
                 
+//        Date e[]=new Date[N];
+//        e[0]=pickup[0];
+//        e[N-1]=pickup[n-1];
+//        for (int i=0; i<n; i++){
+//            e[i+1]=pickup[i];
+//        }
+//        for (int i=0; i<n; i++){
+//            e[i+n+1]=pickup[i];
+//        }
+        
+        long ems[]=new long[N];
+        ems[0]=pickupms[0];
+        ems[N-1]=pickupms[n-1];
+        for (int i=0; i<n; i++){
+            ems[i+1]=pickupms[i];
+        }
+        for (int i=0; i<n; i++){
+            ems[i+n+1]=pickupms[i];
+        }
+
+//        Date l[]=new Date[N];
+//        for (int i=0; i<N; i++){
+//            calendar.setTime(e[i]);
+//            calendar.add(Calendar.HOUR, h);
+//            Date result1=calendar.getTime();
+//            l[i]=result1;
+//        }
+
+        long l[]=new long[N];
+                for (int i=0; i<N; i++){
+                    l[i]=ems[i]+3600000;
+                }
+                                     
+                // Convert milisecond to date
+//                for (int i=0; i<N; i++){
+//                    Date datea=new Date(ems[i]);
+//                    Date dateb=new Date(l[i]);
+//                    System.out.println(ems[i]+"\t"+l[i]+"\t"+datea+"\t"+dateb);
+//                    
+//                }
+
 //          define new model
                 
             IloCplex cplex = new IloCplex(); 
@@ -437,13 +462,14 @@ public class Darp {
           
           // Constraint 11
           
-//          for (int i=0; i<N; i++){
-//              for (int k=0; k<K; k++){
-//                  IloLinearNumExpr expr = cplex.linearNumExpr();
-//                  expr.addTerm(1.0, B[i][k]);
-//                  cplex.addLe(expr, l[i]);
-//              }
-//          }
+          for (int i=0; i<N; i++){
+              for (int k=0; k<K; k++){
+                  IloLinearNumExpr expr = cplex.linearNumExpr();
+                  expr.addTerm(1.0, B[i][k]);                
+                  cplex.addLe(expr, l[i]);
+                  cplex.addGe(expr, ems[i]);
+              }
+          }
             
           // Constraint 12
           
@@ -496,8 +522,11 @@ public class Darp {
                                 try {
 
                                     if (cplex.getValue(x[i][j][k]) > 0.0) {
-//                                        System.out.println(x[i][j][k].getName() + " " + cplex.getValue(x[i][j][k]));
-                                        System.out.println(i + " " + j + " "+ k + " " + (int) cplex.getValue(x[i][j][k]));
+//                                      System.out.println(x[i][j][k].getName() + " " + cplex.getValue(x[i][j][k]));
+                                        double times=cplex.getValue(B[j][k]);
+                                        long timeslong = (long)times;
+                                        Date timestodeliver=new Date(timeslong);
+                                        System.out.println(i + " " + j + " "+ k + " " + (int) cplex.getValue(x[i][j][k])+" "+timestodeliver);
 //                                        System.out.println(Q[i][k].getName() + " " + cplex.getValue(Q[i][k]));
 //                                        System.out.println(L[i][k].getName() + " " + cplex.getValue(L[i][k]));
                                            
