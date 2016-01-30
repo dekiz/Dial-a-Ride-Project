@@ -36,35 +36,16 @@ public class Darp {
         int q[] = new int[N];
         double T[]= new double[K];
         int KQ[]=new int[K];
-        
-
-
+ 
             
 //        double coordinates[]=ExcelRead.ExcelRead("C:\\Users\\IBM_ADMIN\\Documents\\NetBeansProjects\\KapgelProject\\KapgelProject\\simulated_data.xlsx");
 //        for (int i=0; i<coordinates.length;i++){
 ////            System.out.println(coordinates[i]);
 //        }
 
-        
- 
        
         double pickup_dropoff[][]=CoordinatesRead.CoordinatesRead();
-//        double pickup_dropoff[][]={
-//            {41.041999,28.961532},  //origin           
-//            {41.053439,28.987331}, // pickup_baslangic
-//            {41.110152,29.030202},
-//            {41.0530635,28.9892882},
-//            {41.050062,28.99322},
-//            {41.0533527,28.9882135}, // pickup_bitis
-//            {41.0465074756929,28.9976297533289}, // dropoff_baslangic
-//            {41.1120245907701,29.0355987489495},
-//            {41.0808553614557,28.9658823695712},
-//            {41.0671789266345,28.979907222684},
-//            {41.0750425734557,28.984906204119}, // droppoff_bitis
-//            {41.041999,28.961532} //destination
-//         
-//        };
-//        
+
 //      Duration of service at node i         
         double d[]=new double[N];
         for (int i=0; i<N; i++){
@@ -92,6 +73,7 @@ public class Darp {
          {
 //             System.out.println(q[i]);
          }
+         
         //time needed for going from node i to node j
 
         // total duration of courier k cannot exceed Tk
@@ -103,7 +85,6 @@ public class Darp {
 
         
         try {
-//      String[] strdate = {"2015-08-17 15:48:21", "2015-08-17 16:30:21", "2015-08-17 16:59:55","2015-08-17 17:45:16" , "2015-08-17 18:33:05", "2015-08-17 18:06:21", "2015-08-17 19:46:03"};
         String[] strdate = ExcelRead.TimesRead("C:\\Users\\IBM_ADMIN\\Documents\\NetBeansProjects\\KapgelProject\\KapgelProject\\simulated_data.xls");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         for ( int i=0; i<n; i++){
@@ -520,7 +501,7 @@ public class Darp {
 //                                        System.out.println(Q[i][k].getName() + " " + cplex.getValue(Q[i][k]));
 //                                        System.out.println(L[i][k].getName() + " " + cplex.getValue(L[i][k]));
                                            
-                                                // Write excel 
+                                                // Write to an excel 
         
                                           WritableWorkbook wworkbook;
                                           wworkbook = Workbook.createWorkbook(new File("output.xls"));

@@ -2,6 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+///////////////////////////////////////////////////////////////////////////
+// Warning !!! Algorithm is not completed. Some constraints are missing. //
+///////////////////////////////////////////////////////////////////////////
 package kapgelproject;
 
 import ilog.concert.*;

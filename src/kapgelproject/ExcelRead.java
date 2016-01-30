@@ -4,15 +4,16 @@
  */
 package kapgelproject;
 
+
 import java.io.File;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.poi.ss.usermodel.DataFormatter;
 
 
 public class ExcelRead {
-
+    
     public static String[] TimesRead(String excel) throws Exception {
 
 //    File f=new File("C:\\Users\\IBM_ADMIN\\Documents\\NetBeansProjects\\KapgelProject\\KapgelProject\\simulated_data.xlsx");
@@ -85,8 +86,9 @@ public class ExcelRead {
     }
 
      public static double[][] CoordinatesRead(String excel) throws Exception {
-
+        DataFormatter formatter = new DataFormatter();
 //    File f=new File("C:\\Users\\IBM_ADMIN\\Documents\\NetBeansProjects\\KapgelProject\\KapgelProject\\simulated_data.xlsx");
+
         File f = new File(excel);
         Workbook wb = Workbook.getWorkbook(f);
         Sheet s = wb.getSheet(0);
@@ -99,11 +101,14 @@ public class ExcelRead {
         double OriginLat[] = new double[row];
         double OriginLong[] = new double[row];
 
-        for (int j = 1; j < row; j++) {
-            Cell A = s.getCell(2, j);
-            String stringA = A.getContents();
+        for (int j = 1; j < row; j++) {    
+          
+            Cell A = s.getCell(2,j);   
+//            String stringA = A.getContents();
+            String stringA = formatter.formatCellValue((org.apache.poi.ss.usermodel.Cell) A);
+//            String tringA = A.getContents();
 //            System.out.println(stringA.substring(0, stringA.length()));
-            DestinationLat[j] = Double.parseDouble(stringA);
+//            DestinationLat[j] = Double.parseDouble(stringA);
             
             Cell B = s.getCell(3, j);
             String stringB = B.getContents();
@@ -138,11 +143,11 @@ public class ExcelRead {
          }
      }
 //        
-//        for (int i=0; i< (2*(pickupcoordinates[0].length-1)+2); i++){
-//            for (int j=0; j<2; j++){
-//                System.out.println(test[i][j]);
-//            }
-//        }
+        for (int i=0; i< (2*(pickupcoordinates[0].length-1)+2); i++){
+            for (int j=0; j<2; j++){
+                System.out.println(coordinates[i][j]);
+            }
+        }
         
         return coordinates;
 
