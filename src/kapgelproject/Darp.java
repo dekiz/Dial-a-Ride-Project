@@ -22,7 +22,7 @@ public class Darp {
         
         
         int n = 10;// number of requests
-        int K = 6; // number of couriers
+        int K = 5; // number of couriers
         int N = (2*n+2);
         
         Date pickup[]=new Date[n];
@@ -48,7 +48,7 @@ public class Darp {
         
  
        
-        double pickup_dropoff[][]=ExcelRead.CoordinatesRead("C:\\Users\\IBM_ADMIN\\Documents\\NetBeansProjects\\KapgelProject\\KapgelProject\\simulated_data.xls");
+        double pickup_dropoff[][]=CoordinatesRead.CoordinatesRead();
 //        double pickup_dropoff[][]={
 //            {41.041999,28.961532},  //origin           
 //            {41.053439,28.987331}, // pickup_baslangic
@@ -68,7 +68,7 @@ public class Darp {
 //      Duration of service at node i         
         double d[]=new double[N];
         for (int i=0; i<N; i++){
-            d[i]=360000;
+            d[i]=300000;
         }
       
 // Each vehicle has a capacity KQ
@@ -100,23 +100,10 @@ public class Darp {
             
             T[k] = 32400000;
         }
-//Define pickup times array
-//        Date pickuptimes[]=new Date[n];
-//        String timestamp[]=ExcelRead.ExcelRead("C:\\Users\\asus\\Documents\\MATLAB\\testsample.xls");
-//        for (int i=0; i<timestamp.length;i++){
-////            System.out.println(timestamp[i]);
-//        }
-////
-//        try {
-//        
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-//        for ( int i=0; i<n; i++){
-//        pickuptimes[i] = dateFormat.parse(timestamp[i]);
-//      System.out.println(dateFormat.format(pickuptimes[i]));
-//        }        
+
         
         try {
-//        String[] strdate = {"2015-08-17 15:48:21", "2015-08-17 16:30:21", "2015-08-17 16:59:55","2015-08-17 17:45:16" , "2015-08-17 18:33:05", "2015-08-17 18:06:21", "2015-08-17 19:46:03"};
+//      String[] strdate = {"2015-08-17 15:48:21", "2015-08-17 16:30:21", "2015-08-17 16:59:55","2015-08-17 17:45:16" , "2015-08-17 18:33:05", "2015-08-17 18:06:21", "2015-08-17 19:46:03"};
         String[] strdate = ExcelRead.TimesRead("C:\\Users\\IBM_ADMIN\\Documents\\NetBeansProjects\\KapgelProject\\KapgelProject\\simulated_data.xls");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         for ( int i=0; i<n; i++){
@@ -169,7 +156,7 @@ public class Darp {
             for (int j=0; j<N; j++){
                 distance[i][j]=Haversine.haversine(pickup_dropoff[i][1], pickup_dropoff[i][0], pickup_dropoff[j][1], pickup_dropoff[j][0]);
                 if (i!=j){
-                t[i][j]=distance[i][j]*3600000/30;
+                t[i][j]=distance[i][j]*3600000/40;
 //                    t[i][j]=0.2;
                 }
                 else if(i==j){
