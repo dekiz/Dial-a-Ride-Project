@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class CoordinatesRead {
         public static double[][] CoordinatesRead(){
-        int n = 10;
+        int n = 12;
         double[] destination_lat  = new double[n];
         double[] destination_long = new double[n];
         double[] origin_lat       = new double[n];

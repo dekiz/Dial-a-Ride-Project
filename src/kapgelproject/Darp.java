@@ -1,7 +1,7 @@
 
 package kapgelproject;
 
-//import groovyjarjarasm.asm.Label;
+
 import ilog.concert.*;
 import ilog.cplex.*;
 import java.io.File;
@@ -21,8 +21,8 @@ public class Darp {
 //      Declarations
         
         
-        int n = 10;// number of requests
-        int K = 5; // number of couriers
+        int n = 12;// number of requests
+        int K = 2; // number of couriers
         int N = (2*n+2);
         
         Date pickup[]=new Date[n];
