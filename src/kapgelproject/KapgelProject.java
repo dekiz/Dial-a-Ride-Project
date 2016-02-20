@@ -1,4 +1,14 @@
 
+/*----------------------------------------------------------------
+ *  Author:        Dilek Arikan
+ *  Written:       01.01.2016
+ *  Last updated:  02.02.2016
+ *
+ *  Compilation:   javac KapgelProject.java
+ *  Execution:     java KapgelProject
+ *  
+ *----------------------------------------------------------------*/
+
 package kapgelproject;
 
 public class KapgelProject {
